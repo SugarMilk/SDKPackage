@@ -13,9 +13,15 @@ def getOldVersion():
 
     return content[startLength:endLength]
 
+def getSugguestionVersion():
+    temp = getOldVersion().split('.')
+    temp[len(temp) - 1] = str(int(temp[len(temp) - 1]) + 1)
+    return ".".join(temp)
+
 def setNewVersion(newVersion):
     newString = "#define GameFriendSDKVersion @\"" + newVersion + "\""
 
     handler = open("GameFriendSDKVersion.h", "w")
     handler.write(newString)
     handler.close()
+
