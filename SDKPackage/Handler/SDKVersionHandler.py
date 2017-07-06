@@ -3,25 +3,40 @@
 
 # todo: GameFriendSDKVersion.h文件路径动态获取
 
+import os
+import PathConfigHandler
+
 def getOldVersion():
-    handler = open("GameFriendSDKVersion.h", "r")
-    content = handler.read()
-    handler.close()
+    path = PathConfigHandler.getValueForKey(PathConfigHandler.key_versionFilePath)
 
-    startLength = len("#define GameFriendSDKVersion @\"")
-    endLength = len(content) - len("\"")
+    if os.path.exists(path) and os.path.isfile(path):
+        handler = open(path, "r")
+        content = handler.read()
+        handler.close()
 
-    return content[startLength:endLength]
+        startLength = len("#define GameFriendSDKVersion @\"")
+        endLength = len(content) - len("\"")
+
+        return content[startLength:endLength]
+
 
 def getSugguestionVersion():
-    temp = getOldVersion().split('.')
-    temp[len(temp) - 1] = str(int(temp[len(temp) - 1]) + 1)
-    return ".".join(temp)
+    version = getOldVersion()
+
+    if version is not None:
+        temp = version.split('.')
+        lastIndex = len(temp) - 1
+        temp[lastIndex] = str(int(temp[lastIndex]) + 1)
+        return ".".join(temp)
+
 
 def setNewVersion(newVersion):
-    newString = "#define GameFriendSDKVersion @\"" + newVersion + "\""
+    path = PathConfigHandler.getValueForKey(PathConfigHandler.key_versionFilePath)
 
-    handler = open("GameFriendSDKVersion.h", "w")
-    handler.write(newString)
-    handler.close()
+    if os.path.exists(path) and os.path.isfile(path):
+        newString = "#define GameFriendSDKVersion @\"" + newVersion + "\""
+
+        handler = open(path, "w")
+        handler.write(newString)
+        handler.close()
 

@@ -10,16 +10,15 @@ sys.path.append("..")
 
 from Tool import PersistenceUtil
 
-settingPath = "settingPath.json"
+settingPath = "../Data/SettingPath.json"
 
 key_projectFilePath = "projectFilePath"
 key_versionFilePath = "versionFilePath"
 key_extraFilePath = "extraFilePath"
 key_exportDirPath = "exportDirPath"
 
-def setter(key, value):
+def setKeyWithValue(key, value):
     PersistenceUtil.modifyJson(settingPath, key, value)
 
-def getter(key):
+def getValueForKey(key):
     return PersistenceUtil.getValueFromJson(settingPath, key)
-

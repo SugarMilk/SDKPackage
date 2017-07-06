@@ -49,7 +49,7 @@ class Textfield(wx.TextCtrl):
         """
         self.SetFont(wx.Font(font, wx.ROMAN, wx.NORMAL, wx.NORMAL))
 
-    def setTextcolor(self, textcolor):
+    def setTextColor(self, textcolor):
         """
         设置输入框文字颜色
         :param textcolor: 文字颜色
