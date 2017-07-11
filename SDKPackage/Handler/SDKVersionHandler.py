@@ -11,11 +11,15 @@ def getOldVersion():
 
     if os.path.exists(path) and os.path.isfile(path):
         handler = open(path, "r")
-        content = handler.read()
+        content = handler.readline()
         handler.close()
 
         startLength = len("#define GameFriendSDKVersion @\"")
-        endLength = len(content) - len("\"")
+
+        if content.endswith("\n"):
+            endLength = len(content) - len("\"\n")
+        else:
+            endLength = len(content) - len("\"")
 
         return content[startLength:endLength]
 
