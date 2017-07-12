@@ -2,6 +2,7 @@
 # created by mr.huangjian@foxmail.com on 2017/7/6.
 
 import wx, time
+from threading import *
 from wxPython.wxPythonEnum import *
 from wxPython.wxPythonStaticText import StaticText
 from wxPython.wxPythonBitmapButton import BitmapButton
@@ -27,11 +28,14 @@ def onBuildButtonAction(event):
     buildHandler = BuildHandler(mode, target, note, version)
     confirmDialog = wx.MessageDialog(panel, buildHandler.confirmMessage(), "编译导出前请确认无误",style=wx.YES_NO)
 
-    if confirmDialog.ShowModal() == wx.ID_YES:
+    def startBuild():
         buildHandler.startBuild()
 
-# 运行Demo工程
+    if confirmDialog.ShowModal() == wx.ID_YES:
+        Thread(target=startBuild).start()
 
+
+# 运行Demo工程
 def onRunButtonAction(event):
     print "Run..."
 
