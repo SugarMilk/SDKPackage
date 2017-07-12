@@ -14,11 +14,12 @@ from Handler.BuildHandler import BuildHandler
 import PathBoard
 
 app = wx.App()
-window = wx.Frame(None, title="好玩友SDK导出工具", size=(500, 270), style=wx.CLOSE_BOX | wx.MINIMIZE_BOX)
+window = wx.Frame(None, title="好玩友SDK导出工具", size=(500, 480), style=wx.CLOSE_BOX | wx.MINIMIZE_BOX)
 panel = wx.Panel(window, -1)
 
 # 编译导出Framework的按钮点击事件
 def onBuildButtonAction(event):
+    onCleanButtonButtonAction(None)
 
     mode = modeRadioList[modeRadio.getSelectedIndex()].encode('utf-8')
     target = targetRadioList[targetRadio.getSelectedIndex()].encode('utf-8')
@@ -29,6 +30,7 @@ def onBuildButtonAction(event):
     confirmDialog = wx.MessageDialog(panel, buildHandler.confirmMessage(), "编译导出前请确认无误",style=wx.YES_NO)
 
     def startBuild():
+        buildHandler.setConsoleView(logOutputTf)
         buildHandler.startBuild()
 
     if confirmDialog.ShowModal() == wx.ID_YES:
@@ -59,7 +61,7 @@ modeLabel.setOrigin((20, 20))
 
 # 模式单选
 
-modeRadioList = ["Debug", "Release"]
+modeRadioList = ["Release", "Debug"]
 
 modeRadio = RadioBox(panel, modeRadioList)
 modeRadio.SetPosition((70, 15))
@@ -123,6 +125,16 @@ newVersionTf.setSize((120, 25))
 newVersionTf.setFont(15)
 newVersionTf.setText(SDKVersionHandler.getSugguestionVersion())
 
+# 刷新按钮
+
+def onRefreshButtonButtonAction(event):
+    oldVersionTf.setText(SDKVersionHandler.getOldVersion())
+    newVersionTf.setText(SDKVersionHandler.getSugguestionVersion())
+
+refreshButton = BitmapButton(panel, imagePath='../Resource/refresh.png', onClick=onRefreshButtonButtonAction)
+refreshButton.setOrigin((450, 132))
+
+
 runButton = Button(panel, onClick=onRunButtonAction)
 runButton.setOrigin((25, 183))
 runButton.setSize((190, 35))
@@ -137,7 +149,20 @@ buildButton.setSize((200, 35))
 buildButton.setFont(15)
 buildButton.setTitle("\n编译导出Framework\n")
 
+# 日志输出框
 
+logOutputTf = Textfield(panel, style=textFieldType.readonly)
+logOutputTf.setOrigin((22, 235))
+logOutputTf.setSize((420, 200))
+logOutputTf.setFont(14)
+
+# 清空日志按钮
+
+def onCleanButtonButtonAction(event):
+    logOutputTf.cleanText()
+
+cleanButton = BitmapButton(panel, imagePath='../Resource/clean.png', onClick=onCleanButtonButtonAction)
+cleanButton.setOrigin((450, 235))
 
 """"""""""" 结束搭建界面 """""""""""
 

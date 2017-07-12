@@ -19,7 +19,7 @@ class Textfield(wx.TextCtrl):
         设置输入框文本内容
         :param text: 文本内容
         """
-        self.SetLabelText(text)
+        self.SetValue(text)
 
     def getText(self):
         """
@@ -55,4 +55,11 @@ class Textfield(wx.TextCtrl):
         :param textcolor: 文字颜色
         """
         self.SetForegroundColour(textcolor)
+
+    def appendText(self, text):
+        string = "%s%s" % (self.GetValue(), text.decode("utf-8"))
+        self.SetValue(string)
+
+    def cleanText(self):
+        self.SetValue("")
 
